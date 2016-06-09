@@ -99,7 +99,7 @@ module ActsAsTenant
         # - validate that associations belong to the tenant, currently only for belongs_to
         #
         before_validation Proc.new {|m|
-          if ActsAsTenant.current_tenant
+          if ActsAsTenant.current_tenant && current_user.role != 'admin'
             m.send "#{fkey}=".to_sym, ActsAsTenant.current_tenant.id
           end
         }, :on => :create
